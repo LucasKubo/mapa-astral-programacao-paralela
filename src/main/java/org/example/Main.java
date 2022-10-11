@@ -30,14 +30,17 @@ public class Main {
         });
 
 
-        pessoaList.forEach((pessoa -> {
-            String caminho = HOME_PATH.concat("/files/" + pessoa.getNome() + ".txt");
-            try {
-                Arquivo.criar(caminho, pessoa.gerarRelatorio());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
+        pessoaList.stream()
+                .parallel()
+                .forEach((pessoa) -> {
+                    System.out.println(Thread.currentThread().getName() + System.nanoTime());
+                    String caminho = HOME_PATH.concat("/files/" + pessoa.getNome() + ".txt");
+                    try {
+                        Arquivo.criar(caminho, pessoa.gerarRelatorio());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
     }
 }
